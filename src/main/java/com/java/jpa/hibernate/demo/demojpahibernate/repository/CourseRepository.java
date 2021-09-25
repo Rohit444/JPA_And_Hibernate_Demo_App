@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.java.jpa.hibernate.demo.demojpahibernate.entity.Course;
+import com.java.jpa.hibernate.demo.demojpahibernate.entity.Review;
 
 @Repository
 @Transactional
@@ -71,5 +72,28 @@ public class CourseRepository {
 //										// it will be refreshed with the content that comes from the database.
 //		entityManager.flush();
 	}
+	
+       public void addReviewsForTheCourse() {
+		
+		// get a course 
+		Course course = findById(10002L);
+		log.info("Review info -> {}",course.getReviews());
+		
+		// add 2 more reviews 
+		Review review1 = new Review("5", "Nice HandsOn course");
+		Review review2 = new Review("5", "Nice stuff");
+		
+		// setting relationship between reviews and course
+		course.addReview(review1);
+		review1.setCourse(course);
+		course.addReview(review2);
+		review2.setCourse(course);
+		
+		// save reviews
+		entityManager.persist(review1);
+		entityManager.persist(review2);
+		
+	}
+	
 	
 }

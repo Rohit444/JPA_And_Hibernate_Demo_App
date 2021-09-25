@@ -18,4 +18,4 @@ logging:
      org: INFO
      '[org.hibernate.type]': trace    #This will show waht parameters is been set to the queries
      
-debug: true
+debug: false

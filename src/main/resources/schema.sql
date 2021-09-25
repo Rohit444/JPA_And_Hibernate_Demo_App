@@ -23,9 +23,9 @@ values (20003,'Jane', 40003);
 
 
 
-insert into review (id, rating, description)
-values (50001,'5','Great Course');
-insert into review (id, rating, description)
-values (50002,'4','Wonderful course');
-insert into review (id, rating, description)
-values (50003,'5','Awesome course');
+insert into review (id, rating, description,course_id)
+values (50001,'5','Great Course',10001);
+insert into review (id, rating, description, course_id)
+values (50002,'4','Wonderful course', 10001);
+insert into review (id, rating, description, course_id)
+values (50003,'5','Awesome course', 10002);

@@ -1,12 +1,15 @@
 package com.java.jpa.hibernate.demo.demojpahibernate.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,6 +29,9 @@ public class Course {
 	private LocalDateTime lastUpdatedDate;
 	@CreationTimestamp
 	private LocalDateTime createdDate;
+	
+	@OneToMany(mappedBy = "course")
+	List<Review> reviews = new ArrayList<>();
 
 	public Course() {
 		super();
@@ -46,6 +52,20 @@ public class Course {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void addReview(Review reviews) {
+		this.reviews.add(reviews);
+	}
+	
+	public void deleteReview(Review reviews) {
+		this.reviews.remove(reviews);
 	}
 
 	@Override
