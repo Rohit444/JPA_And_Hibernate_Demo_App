@@ -33,7 +33,7 @@ class studentReposioryTest {
 	
 //	@Test
 //	@Transactional
-//	public void basicTest() {
+//	public void gettingPassportFromStudentTest() {
 //		Student student = entityManager.find(Student.class, 20001L);
 //		log.info("Student Name is ====> "+student.getName());
 //		log.info("PassPort info : ====> "+student.getPassport());
@@ -41,18 +41,28 @@ class studentReposioryTest {
 	
 	@Test
 	@Transactional
-	public void uderstandPersistenceContextTest() {
-		// Operation1: Retrieve Student
-		Student student = entityManager.find(Student.class, 20001L);
-		// Operation2: Retrieve PassPort
-		Passport passport = student.getPassport();
-		// Operation3: Update Passport
-		passport.setNumber("EMJPS654");
-		// Operation4: Update Student
-		student.setName("Rohit Sharma");
-		
-		
+	public void gettingStudentFromPassportTest() {
+		Passport passport = entityManager.find(Passport.class, 40001L);
+		log.info("Passport Number is ====> "+passport.getNumber());
+		log.info("Student info : ====> "+passport.getStudent());
 	}
+	
+//	@Test
+//	@Transactional
+//	public void uderstandPersistenceContextTest() {
+//		// Operation1: Retrieve Student
+//		Student student = entityManager.find(Student.class, 20001L);
+//		// Operation2: Retrieve PassPort
+//		Passport passport = student.getPassport();
+//		// Operation3: Update Passport
+//		passport.setNumber("EMJPS654");
+//		// Operation4: Update Student
+//		student.setName("Rohit Sharma");
+//		
+//		
+//	}
+	
+	
 
 
 }

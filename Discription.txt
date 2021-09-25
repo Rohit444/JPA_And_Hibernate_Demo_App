@@ -30,7 +30,7 @@ Any OneToOne relationship is always eager fetch by default.
 And this might gives us a performance issues in our application. We can avoid this by using @OneToOne(fetch = FetchType.LAZY)
 In Lazy fetching we will get those data what ever we needed at that point in time.
 
-
+==================================================================================================================================================================================================================================================
 **** Session, Session factory, Entity Manager, Persistence context and Transaction ****
 
 When we talk about transaction everything should succeed or nothing should succeed. So within the transaction if any one operation fails entire transaction will be rolled back.
@@ -68,13 +68,89 @@ At this time all the operations are treated under a single transaction.
 Suppose if we remove @Transactional annotation then each operation (method call on entity manager's object) acts as if its own transaction. So as soon as operation ended transaction ended and its Persistence context is closed.
 If we try to perform another operation we will get an exception like==> Could not initialize proxy - no session (In Hibernate terminology Session = Persistence Context in JPA terminology). Because Persistence context is closed by then.
 
+Note 1: The Actual insert or update happens after the completion of all transactions. If you want to push your changes in the database in between an ongoing transaction then you can use flush() for example:
+
+         @Autowired
+          EntiryManager em;
+
+         @Transactional
+         public void someMethodWithChange{
+            
+                 //Create Objects
+                 em.persist(user1);
+                 em.persist(user2);
+                 em.flush();  // here we are saving user1 and user2 in data base even before completion of transaction.
+                 //Change user1;
+                 //Change user2;
+                 
+            }   // At this line transaction is completed and all changes saved to the database 
+
+
+Note 2: In JPA we use Entity Manager to talk to the Persistence context 
+
 Persistence Context also gives access to the data base.
-
-Note: In JPA we use Entity Manager to talk to the Persistence context 
-
 While in Hibernate we use Session and Session Factory.
 
+====================================================================================================================================================================================================================================================
+** Bidirectional one-to-one relationship **
+In the bidirectional one-to-one relation the owning side entity (example: Student) define as following:
 
+@Entity
+public class Student {
 
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String name;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private Passport passport;
+	
+	}
 
+there is no mapped by field.
+
+But non owning side entity (example: Passport) should have mention the file name which is there at owning side in mapped by as following:
+
+@Entity
+public class Passport {
+
+	@Id
+	@GeneratedValue
+	private Long id;
+	
+	@Column(nullable = false)
+	private String number;
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "passport")
+	private Student student;
+	
+}
+
+====================================================================================================================================================================================================================================================
+** Why to use @Transactional in Unit test ? **
+
+First of all when ever we have to make any change in the database we have to use transaction and that is provided by @Transational annotation.
+-- If we put @Trasactional at method level then the operation performed inside the entire method comes in the boundary of transaction.
+-- If we put @Trasactional at class level entire class comes in the boundary of transaction.
+
+** Do Read only methods need transaction ? **
+Suppose we have two entities --> User , Comments 
+And we are performing following read only method with our using @Transactional:
+
+//@Transactional
+List<Comments> someReadOnlyMethod(){ 
+      
+      User user = em.find(User.class, 1L);  // Since we haven't provide @Transactional, so entity manager makes use of default transaction and as soon as this line end transaction ends.
+      
+      List <Comments> comments = user.getComments(); // And since at this line we are not making the use of entity manager so there is nothing which provides transaction and since we need to fire a query in the data base to retrieve comments and we need connection to the data base and it require transaction, so this line will give an error.
+      
+      return comments;
+}
+
+** Why do we use @DirtiesContext ? **
+
+Lets say we have couple of Unit tests, and some of the unit tests might updates the data which is there is Data base in order to full fill its requirements.
+This might affects some other units tests, and they got failed. So what @DirtiesContext does it ensures all the changes which are made in the data base are rolled back.
+And this will make sure there are no dependencies in the order of execution of unit tests.
 
