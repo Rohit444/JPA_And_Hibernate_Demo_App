@@ -154,3 +154,50 @@ Lets say we have couple of Unit tests, and some of the unit tests might update t
 This might affects some other units tests, and they got failed. So what @DirtiesContext does, it ensures all the changes which are made in the data base are rolled back.
 And this will make sure there are no dependencies in the order of execution of unit tests.
 
+
+** What is the difference between defining @Transactional on class vs method ? **
+
+Case1
+@Transactional
+public class UserServiceImpl implements UserService {
+
+    ...................
+    public void method1(){
+        try{
+            method2();
+        }catch(Exception e){
+
+        }
+    }
+    public void method2(){
+
+    }
+}
+Case2
+public class UserServiceImpl implements UserService {
+
+    ...................
+    public void method1(){
+        try{
+            method2();
+        }catch(Exception e){
+
+        }
+    }
+    @Transactional
+    public void method2(){
+
+    }
+}
+
+In case 1 @Transactional is applied to every public individual method. Private and Protected methods are Ignored by Spring.
+
+In case 2 @Transactional is only applied to method2(), not on method1()
+
+Case 1: - Invoking method1() -> a transaction is started. When method1() calls method2() no new transaction is started, because there is already one
+
+Case 2: - Invoking method1() -> no transaction is started. When method1() calls method2() NO new transaction is started. This is because @Transactional does not work when calling a method from within the same class. It would work if you would call method2() from another class.
+
+
+
+
