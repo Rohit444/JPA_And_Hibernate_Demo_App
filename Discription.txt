@@ -110,7 +110,7 @@ public class Student {
 
 there is no mapped by field.
 
-But non owning side entity (example: Passport) should have mention the file name which is there at owning side in mapped by as following:
+But non-owning side entity (example: Passport) we must have to mention the field name which is there at owning side in mapped by attribute as following:
 
 @Entity
 public class Passport {
