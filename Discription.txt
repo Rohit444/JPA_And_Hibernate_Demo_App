@@ -150,7 +150,7 @@ List<Comments> someReadOnlyMethod(){
 
 ** Why do we use @DirtiesContext ? **
 
-Lets say we have couple of Unit tests, and some of the unit tests might updates the data which is there is Data base in order to full fill its requirements.
-This might affects some other units tests, and they got failed. So what @DirtiesContext does it ensures all the changes which are made in the data base are rolled back.
+Lets say we have couple of Unit tests, and some of the unit tests might update the data which is there is Data base to full fill their requirements.
+This might affects some other units tests, and they got failed. So what @DirtiesContext does, it ensures all the changes which are made in the data base are rolled back.
 And this will make sure there are no dependencies in the order of execution of unit tests.
 
