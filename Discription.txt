@@ -65,8 +65,8 @@ At this time all the operations are treated under a single transaction.
 		
 	}
 
-Suppose if we remove @Transactional annotation then each operation (method call on entity manager's object) acts as if its own transaction. So as soon as operation ended transaction and its Persistence context is closed.
-If we try to perform another operation we would get an exception like==> Could not initialize proxy - no session (In Hibernate terminology Session = Persistence Context). Because Persistence context is closed by then.
+Suppose if we remove @Transactional annotation then each operation (method call on entity manager's object) acts as if its own transaction. So as soon as operation ended transaction ended and its Persistence context is closed.
+If we try to perform another operation we will get an exception like==> Could not initialize proxy - no session (In Hibernate terminology Session = Persistence Context in JPA terminology). Because Persistence context is closed by then.
 
 Persistence Context also gives access to the data base.
 
