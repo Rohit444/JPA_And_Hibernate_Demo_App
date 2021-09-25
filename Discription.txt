@@ -50,6 +50,21 @@ So Persistence Context is actually keeping the track of any changes in the data 
 For Example: There are multiple create and update operations takes place in a method which is annotated with @Transactional annotation.
 At this time all the operations are treated under a single transaction.
 
+    @Test
+	@Transactional
+	public void uderstandPersistenceContextTest() {
+		// Operation1: Retrieve Student
+		Student student = entityManager.find(Student.class, 20001L);
+		// Operation2: Retrieve PassPort
+		Passport passport = student.getPassport();
+		// Operation3: Update Passport
+		passport.setNumber("EMJPS654");
+		// Operation4: Update Student
+		student.setName("Rohit Sharma");
+		
+		
+	}
+
 Suppose if we remove @Transactional annotation then each operation (method call on entity manager's object) acts as if its own transaction. So as soon as operation ended transaction and its Persistence context is closed.
 If we try to perform another operation we would get an exception like==> Could not initialize proxy - no session (In Hibernate terminology Session = Persistence Context). Because Persistence context is closed by then.
 
