@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.java.jpa.hibernate.demo.demojpahibernate.entity.Course;
 import com.java.jpa.hibernate.demo.demojpahibernate.entity.Review;
+import com.java.jpa.hibernate.demo.demojpahibernate.entity.Student;
 import com.java.jpa.hibernate.demo.demojpahibernate.repository.CourseRepository;
 
 @RunWith(SpringRunner.class)
@@ -90,6 +91,23 @@ class DemoJpaHibernateApplicationTests {
 		
 	}
 	
+	@Test
+	@Transactional
+	public void play_With_ManyToMany_Getting_Course_From_Student_test() {
+		//By default ManyToMany is doing lazy fetching
+		Student student = entityManager.find(Student.class, 20001L);
+		log.info("Course Details are "+student.getCourses());
+		
+	}
+	
+	@Test
+	@Transactional
+	public void play_With_ManyToMany_Getting_Student_From_Course_test() {
+		//By default ManyToMany is doing lazy fetching
+		Course course = entityManager.find(Course.class, 10001L);
+		log.info("Course Details are "+course.getStudents());
+		
+	}
 	
 
 }

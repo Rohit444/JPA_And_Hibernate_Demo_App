@@ -1,5 +1,7 @@
 package com.java.jpa.hibernate.demo.demojpahibernate.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
@@ -8,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.java.jpa.hibernate.demo.demojpahibernate.entity.Course;
 import com.java.jpa.hibernate.demo.demojpahibernate.entity.Passport;
+import com.java.jpa.hibernate.demo.demojpahibernate.entity.Review;
 import com.java.jpa.hibernate.demo.demojpahibernate.entity.Student;
 
 @Repository
@@ -68,6 +72,26 @@ public class StudentRepository {
 //		entityManager.refresh(student1); // by using refresh all the changes that has been made on student1 are lost and
 //										// it will be refreshed with the content that comes from the database.
 //		entityManager.flush();
+	}
+	
+	
+	public void saveStudnetWithCourse(Student student, Course course) {
+		student.addCourses(course);
+		course.addStudents(student);
+		entityManager.persist(student);
+		entityManager.persist(course);
+		
+	}
+	
+	public void saveStudentWithReview(Student student, List<Review> reviews) {
+		
+		for(Review review : reviews) {
+	    student.addReviews(review);
+	    review.setStudent(student);
+		entityManager.persist(student);
+		entityManager.persist(review);
+		}
+		
 	}
 
 	

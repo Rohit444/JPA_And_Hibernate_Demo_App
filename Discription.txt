@@ -226,4 +226,29 @@ So we can remember this like :
 **ToOne : Default is Eager fetching
 **ToMany :Default is Lazy fetching
 
+======================================================================================================================================================================================================================================
+** ManyToMay relationship between Student and Course **
+
+In ManyToMany relationship it doesn't matter which side is the owning side, but we must have to define an owning side.
+
+@JoinTable is used to create a join table. We can define the attribute name= "Name of the Join table" and JoinCoumn (Student_Id) 
+and InverseJoinColumn (Course_Id) we can define it a following:
+
+    @ManyToMany
+	@JoinTable(name = "STUDENT_COURSE", joinColumns = @JoinColumn(name = "STUDENT_ID"), 
+	           inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+	private List<Course> courses = new ArrayList<>();
+
+
+** Difference between JPA & hibernate ? **
+
+JPA is a specification/Interface
+Hibernate is one of JPA implementations
+When we use JPA, we use the annotation and interfaces from javax.persistence package, without using the hibernate import packages.
+
+We recommend using JPA annotations as we are not tied to Hibernate as implementation. Later (I know - <1% Chance), we can use another JPA implementation.
+
+If you are using JPA annotations, you would be using JPA + Hibernate.
+
+If you are directly using hibernate annotations, you are only using Hibernate.
 
