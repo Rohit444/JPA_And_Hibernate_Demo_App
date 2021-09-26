@@ -1,5 +1,8 @@
 package com.java.jpa.hibernate.demo.demojpahibernate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.java.jpa.hibernate.demo.demojpahibernate.entity.Review;
 import com.java.jpa.hibernate.demo.demojpahibernate.repository.CourseRepository;
 import com.java.jpa.hibernate.demo.demojpahibernate.repository.StudentRepository;
 
@@ -42,7 +46,12 @@ public class DemoJpaHibernateApplication implements CommandLineRunner{
 		
 //		repository.saveStudentWithPassport();
 		
-		courseRepository.addReviewsForTheCourse();
+		List<Review> reviews = new ArrayList<>();
+		Review review1 = new Review("5", "Nice HandsOn course");
+		Review review2 = new Review("5", "Nice stuff");
+		reviews.add(review1);
+		reviews.add(review2);
+		courseRepository.addReviewsForTheCourse(10001L, reviews );
 
 		
 	}

@@ -198,6 +198,32 @@ Case 1: - Invoking method1() -> a transaction is started. When method1() calls m
 
 Case 2: - Invoking method1() -> no transaction is started. When method1() calls method2() NO new transaction is started. This is because @Transactional does not work when calling a method from within the same class. It would work if you would call method2() from another class.
 
+============================================================================================================================================================================================================================================================================================================
 
+By default the fetch strategy of a relationship at oneToMany side is lazy,
+So by default below code is fetching lazy way:
+
+@OneToMany(mappedBy = "course")
+List<Review> reviews = new ArrayList<>();
+
+We can make this as eager fetching by making below changes:
+
+@OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
+List<Review> reviews = new ArrayList<>();
+	
+But on the other hand, at ManyToOne side of the relationship by default fetching strategy is always eager.
+So by default below code is fetching eager way
+
+@ManyToOne
+private Course course;
+
+We can make this as lazy fetching by making below changes:
+@ManyToOne(fetch = FetchType.LAZY)
+	private Course course;
+	
+	
+So we can remember this like :
+**ToOne : Default is Eager fetching
+**ToMany :Default is Lazy fetching
 
 

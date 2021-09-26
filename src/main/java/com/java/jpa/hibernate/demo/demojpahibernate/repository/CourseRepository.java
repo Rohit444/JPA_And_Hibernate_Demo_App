@@ -1,5 +1,7 @@
 package com.java.jpa.hibernate.demo.demojpahibernate.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
@@ -73,7 +75,7 @@ public class CourseRepository {
 //		entityManager.flush();
 	}
 	
-       public void addReviewsForTheCourse() {
+       public void addHardcoadedReviewsForTheCourse() {
 		
 		// get a course 
 		Course course = findById(10002L);
@@ -93,6 +95,21 @@ public class CourseRepository {
 		entityManager.persist(review1);
 		entityManager.persist(review2);
 		
+	}
+       
+       
+	public void addReviewsForTheCourse(Long courseId, List<Review> reviews) {
+		// get a course
+		Course course = findById(courseId);
+		log.info("Review info -> {}", course.getReviews());
+
+		for (Review review : reviews) {
+			course.addReview(review);
+			review.setCourse(course);
+
+			entityManager.persist(review);
+		}
+
 	}
 	
 	
