@@ -252,3 +252,139 @@ If you are using JPA annotations, you would be using JPA + Hibernate.
 
 If you are directly using hibernate annotations, you are only using Hibernate.
 
+
+=====================================================================================================================================================================================================================================================
+** Inheritance hierarchies with JPA and hibernate **
+
+1. Single Table strategy:
+-----------------------
+
+If we don't specify any inheritance strategy, then by default strategy will be Single table.
+In this all the subclasses data mapped to a single Table.
+
+Advantage with Single table hierarchy :
+Performance, because we would get everything from a single table. And we donn't have to do any joins and all.
+
+Disadvantage with Single table hierarchy :
+We would have a lot of nullable columns.
+
+Note: We can specify Discriminator Column as following:
+      @DiscriminatorColumn(name = "EmployeeType")
+      
+Example:
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "EmployeeType")
+public abstract class Employee {
+      // ....
+}
+      
+      
+2. Table Per class Strategy:
+-------------------------
+
+As per the definition Table per class means Table per concrete entity class.
+In this Each concrete subclass is provided with a Table.
+ 
+And if you see the console they are actually retrieve using union:
+
+ select
+        employee0_.id as id1_1_,
+        employee0_.name as name2_1_,
+        employee0_.salary as salary1_2_,
+        employee0_.hourly_wage as hourly_w1_3_,
+        employee0_.clazz_ as clazz_ 
+    from
+        ( select
+            id,
+            name,
+            salary,
+            null as hourly_wage,
+            1 as clazz_ 
+        from
+            full_time_employee 
+        union
+        all select
+            id,
+            name,
+            null as salary,
+            hourly_wage,
+            2 as clazz_ 
+        from
+            part_time_employee 
+    ) employee0_
+
+Disadvantage of using Table per class Strategy : Common columns are repeated in multiple tables.
+
+Example:
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Employee { }
+
+
+
+One of the advantage of using JPA is that how we insert Employee and how we retrieve Employee is not dependent on which Inheritance strategy we are using.
+
+
+3. Joined Strategy:
+-----------------
+
+In this there would be a separate tables for parent class and subclass. And if we want to retrieve all the details there will be a join performed in between them. 
+
+As per the Documentation:
+ /** 
+     * A strategy in which fields that are specific to a 
+     * subclass are mapped to a separate table than the fields 
+     * that are common to the parent class, and a join is 
+     * performed to instantiate the subclass.
+     */
+
+
+Disadvantage of Joined strategy: Performance wise it is not that much effective. Because in the background it will perform so many join operations in a multiple tables.
+
+Example:
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Employee {
+
+
+4. using @MappedSuperclass
+------------------------------
+
+If we are putting this annotation in our Employee class, so it can not be an entity.
+Because if we are using this on Employee class then it will no longer be an Entity and there will be not Table exist corresponding to Employee.
+Here Employee is used like a template to store common attribute used in subclasses. Actual query to retrieve data is happening n subclass it self.
+There is No inheritance relationship here.
+
+
+Here two separate queries are executing to retrieve two different subclass data. And here there is nothing to do with Employee.
+
+    select
+        parttimeem0_.id as id1_2_,
+        parttimeem0_.name as name2_2_,
+        parttimeem0_.hourly_wage as hourly_w3_2_ 
+    from
+        part_time_employee parttimeem0_
+        
+        
+    select
+        fulltimeem0_.id as id1_1_,
+        fulltimeem0_.name as name2_1_,
+        fulltimeem0_.salary as salary3_1_ 
+    from
+        full_time_employee fulltimeem0_
+        
+ Example:
+ 
+@MappedSuperclass
+public abstract class Employee {  }
+        
+--------------------------------------------------------------------------------------------------
+
+** When to Use What? **
+
+If we are more concern about Data integrity then we should use Joined Strategy. Because in this we can made all columns as non nullable and there is no chance to insert a bad data in any table.
+If We are more concern about the performance the Single table Strategy will be the best option.
