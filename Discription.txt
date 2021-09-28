@@ -257,13 +257,13 @@ If you are directly using hibernate annotations, you are only using Hibernate.
 ** Inheritance hierarchies with JPA and hibernate **
 
 1. Single Table strategy:
------------------------
+---------------------------
 
 If we don't specify any inheritance strategy, then by default strategy will be Single table.
 In this all the subclasses data mapped to a single Table.
 
 Advantage with Single table hierarchy :
-Performance, because we would get everything from a single table. And we donn't have to do any joins and all.
+High Performance, because we would get everything from a single table. And we donn't have to do any joins and all.
 
 Disadvantage with Single table hierarchy :
 We would have a lot of nullable columns.
@@ -355,8 +355,8 @@ public abstract class Employee {
 ------------------------------
 
 If we are putting this annotation in our Employee class, so it can not be an entity.
-Because if we are using this on Employee class then it will no longer be an Entity and there will be not Table exist corresponding to Employee.
-Here Employee is used like a template to store common attribute used in subclasses. Actual query to retrieve data is happening n subclass it self.
+Because if we are using this on Employee class then it will no longer be an Entity and there will be no Table corresponding to Employee.
+Here Employee is used like a template to store common attribute used in subclasses. Actual query to retrieve data is happening in subclass it self.
 There is No inheritance relationship here.
 
 
@@ -377,14 +377,33 @@ Here two separate queries are executing to retrieve two different subclass data.
     from
         full_time_employee fulltimeem0_
         
- Example:
+Example:
  
 @MappedSuperclass
 public abstract class Employee {  }
         
---------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ** When to Use What? **
 
 If we are more concern about Data integrity then we should use Joined Strategy. Because in this we can made all columns as non nullable and there is no chance to insert a bad data in any table.
 If We are more concern about the performance the Single table Strategy will be the best option.
+
+
+===========================================================================================================================================================================================================================================================================================================================================================================
+
+   // Join with JPQL
+	//Join ==> Select c , s from Course c JOIN Student s;
+	
+	//Left Join ==> Select c , s from Course c  LEFT JOIN Student s;
+	(There might be courses without students so with LEFT JOIN it will return courses which do not have students)
+	
+	// Cross Join ==> Select c, s from Course c, Student s;
+	(It just take every course and mixes them with every student which is present in there.
+	 For example if there are 3 students and 4 courses the it will return 3*4 = 12 rows back)
+	
+
+
+
+
+

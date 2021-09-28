@@ -66,11 +66,11 @@ public class DemoJpaHibernateApplication implements CommandLineRunner{
 //		reviews.add(review2);
 //		studentRepository.saveStudentWithReview(new Student("Animash"), reviews);
 		
-		employeeRepository.insertEmployee(new PartTimeEmployee("Jill", new BigDecimal("50")));
-		employeeRepository.insertEmployee(new FullTimeEmployee("John", new BigDecimal("10000")));
-		
-		log.info("All Employes info =====> "+employeeRepository.retrieveAllPartTimeEmployee());
-		log.info("All Employes info =====> "+employeeRepository.retrieveAllFullTimeEmployee());
+//		employeeRepository.insertEmployee(new PartTimeEmployee("Jill", new BigDecimal("50")));
+//		employeeRepository.insertEmployee(new FullTimeEmployee("John", new BigDecimal("10000")));
+//		
+//		log.info("All Employes info =====> "+employeeRepository.retrieveAllPartTimeEmployee());
+//		log.info("All Employes info =====> "+employeeRepository.retrieveAllFullTimeEmployee());
 		
 		
 	}
