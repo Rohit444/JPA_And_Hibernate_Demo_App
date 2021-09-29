@@ -401,6 +401,11 @@ If We are more concern about the performance the Single table Strategy will be t
 	// Cross Join ==> Select c, s from Course c, Student s;
 	(It just take every course and mixes them with every student which is present in there.
 	 For example if there are 3 students and 4 courses the it will return 3*4 = 12 rows back)
+	 
+	 
+============================================================================================================================================================================================================================================================================================================================================================================
+Criteria Queries
+
 	
 
 

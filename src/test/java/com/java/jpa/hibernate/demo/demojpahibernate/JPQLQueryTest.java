@@ -97,9 +97,12 @@ class JPQLQueryTest {
 	@Transactional
 	public void JoinTest() {
 		log.info("Join Test===============================");
-		Query createQuery = entityManger.createQuery("select c, s from Course c JOIN Student s");
+		Query createQuery = entityManger.createQuery("Select c, s from Course c JOIN c.students s");
 		List<Object[]> resultList = createQuery.getResultList();
-		log.info("select s from Student s where s.passport.number like 'V1%'-> {}"+resultList);
+		log.info("select s from Student s where s.passport.number like 'V1%'-> {}"+resultList.size());
+		for(Object[] obj : resultList) {
+			log.info("Course{} Student{}->"+obj[1], obj[0]);
+		}
 	}
 	
 	
