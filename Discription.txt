@@ -434,6 +434,7 @@ We have used @Transational annotation so what it does if any on the intermediate
 then entire transaction is rolled back.
 
 Properties in Transaction Management:
+---------------------------------------
 ACID properties
 A -> Atomicity -> Either a transaction is completely successful or all the changes that are done by a transaction should be reverted back.
 C -> Consistency -> It means leaving a system in Consistent state irrespective of weather the transaction succeeded or failed. 
