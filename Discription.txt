@@ -406,9 +406,39 @@ If We are more concern about the performance the Single table Strategy will be t
 ============================================================================================================================================================================================================================================================================================================================================================================
 Criteria Queries
 
+Example: It involves couple of steps in order to create Criteria Query as Following: 
+
+       //1. Use the Criteria builder to create a Criteria Query returning the expected result object
+		     CriteriaBuilder cb = entityManger.getCriteriaBuilder();
+		     CriteriaQuery<Course> cq = cb.createQuery(Course.class);
+		
+		//2. Define the root of the tables which are involved in the query
+		     Root<Course> courseRoot = cq.from(Course.class);
+		
+		//3. Define Predicate etc using criteria builder
+		     Predicate studentsIsEmpty = cb.isEmpty(courseRoot.get("students"));
+		     
+		//4. Add Predicate etc to the criteria query
+		     cq.where(studentsIsEmpty);
+		// 5. Build a Typed Query Using Entity manager and criteria query
+		 TypedQuery<Course> query = entityManger.createQuery(cq.select(courseRoot));
+		 List<Course> resultList = query.getResultList();
+		log.info("Typed Query {}"+resultList);
 	
+============================================================================================================================================================================================================================================================================================================================================================================
+** Transaction Management **
 
+At code level The annotations which Spring & Jpa provides makes the transaction management very easy.
 
+We have used @Transational annotation so what it does if any on the intermediate steps fails in a particular transaction 
+then entire transaction is rolled back.
 
+Properties in Transaction Management:
+ACID properties
+A -> Atomicity -> Either a transaction is completely successful or all the changes that are done by a transaction should be reverted back.
+C -> Consistency -> It means leaving a system in Consistent state irrespective of weather the transaction succeeded or failed. 
+                    Example in a bank transfer after a particular transaction the total sum of amount will be same irrespective if it fails or succeeded.
+I -> Isolation ->   How does one transaction which is already running can affect another transaction which is running in parallel.
+D -> Durability ->  Once the transaction is completed, even if a system is crashes the data will be persisted. The state of a transaction has to be persisted and permanent even if system fails.
 
 
