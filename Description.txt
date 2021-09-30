@@ -607,4 +607,18 @@ spring.jpa.properties.javax.persistence.sharedCache.mode=ENABLE_SELECTIVE
 It is very crucial to decide what data we need to cache in second level caching.
 And we do this my using an annotation @Cacheable at class level (Entity level)
 
+===================================================================================================================================================================================================================================================================================================================================================================
+Hibernate Tips: Hibernate soft delete- @SQLDelete & @Where
+
+We can use following Hibernate annotations at class level (Entity level)if we want to soft delete a data from the table.
+Here we are adding a boolean variable is_deleted and set to false in our Course entity. And defining if a delete operation is performed
+then set is_delete to True.
+
+@SQLDelete(sql = "Update Course_Details set is_deleted=true where id=?")
+@Where(clause = "is_deleted=false")
+public class Course {
+  // .....
+}
+
+
 

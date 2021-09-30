@@ -1,5 +1,6 @@
 package com.java.jpa.hibernate.demo.demojpahibernate;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.persistence.EntityManager;
@@ -38,23 +39,23 @@ class DemoJpaHibernateApplicationTests {
 	@Test
 	public void basicTest() {
 		Course course = courseRepository.findById(10001L);
-		assertEquals("Jpa 50 minuts", course.getName());
+		assertEquals("in 28 minuts", course.getName());
 		log.info("Junit Executed =====>");	
 	}
 
-//	@Test
-//	@DirtiesContext // with this annotation spring would reset the data which got deleted so that
-//					// other tests wont affect
-//	public void deleteTest() {
-//		courseRepository.deleteCourseById(10002L);
-//		assertNull(courseRepository.findById(10002L));
-//	}
+	@Test
+	@DirtiesContext // with this annotation spring would reset the data which got deleted so that
+					// other tests wont affect
+	public void deleteTest() {
+		courseRepository.deleteCourseById(10002L);
+		assertNull(courseRepository.findById(10002L));
+	}
 	
 	@Test
 	@DirtiesContext
 	public void saveTest() {
 		Course course = courseRepository.findById(10001L);
-		assertEquals("Jpa 50 minuts", course.getName());
+		assertEquals("in 28 minuts", course.getName());
 		
 		course.setName("In 100 steps");
 		

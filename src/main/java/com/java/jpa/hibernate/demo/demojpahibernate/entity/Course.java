@@ -16,7 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,6 +27,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @NamedQueries(value = { @NamedQuery(name = "query_get_all_cources", query = "Select c from Course c"),
 @NamedQuery(name = "query_get_100_steps_cources", query = "Select c from Course c where name like '%in 28 minuts'") })
 @Cacheable
+@SQLDelete(sql = "Update Course_Details set is_deleted=true where id=?")
+@Where(clause = "is_deleted=false")
 public class Course {
 
 	@Id
@@ -42,6 +46,8 @@ public class Course {
 	@ManyToMany(mappedBy = "courses")
 	@JsonIgnore
 	List<Student> students = new ArrayList<>();
+	
+	private boolean isDeleted;
 
 	public Course() {
 		super();
