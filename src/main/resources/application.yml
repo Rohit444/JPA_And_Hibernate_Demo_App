@@ -1,21 +1,21 @@
-server:
-  port: 8081
-spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true    #Enabaling H2 Console
-  jpa:
-    defer-datasource-initialization: true
-    show-sql: true     #This will show all sql queries
-    properties:
-      hibernate.format_sql: true
-    
-logging:
-  level:
-     org: INFO
-     '[org.hibernate.type]': trace    #This will show waht parameters is been set to the queries
-     
-debug: false
+#server:
+#  port: 8081
+#spring:
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driver-class-name: org.h2.Driver
+#  h2:
+#    console:
+#      enabled: true    #Enabaling H2 Console
+#  jpa:
+#    defer-datasource-initialization: true
+#    show-sql: true     #This will show all sql queries
+#    properties:
+#      hibernate.format_sql: true
+#    
+#logging:
+#  level:
+#     org: INFO
+#     '[org.hibernate.type]': trace    #This will show waht parameters is been set to the queries
+#     
+#debug: false

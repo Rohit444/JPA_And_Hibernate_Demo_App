@@ -544,9 +544,67 @@ public interface CourseSpringDataRepository extends JpaRepository<Course, Long>{
 
 ====================================================================================================================================================================================================================================================================================================================================================
 
+** Caching with JPA and Hibernate **
+
+For the first time when user query to a data base it get the information and cached and for all subsequent request we get the data from cashed data and in this way we can avoid network round trip and query data base again and again.
+This is the main concept of caching.
+
+When it comes to hibernate there are two different levels of caching.
+1. First Level Cache 
+2. Second Level Cache
+
+First Level Cache:
+----------------------
+
+In any Application there are multiple transactions is going on in parallel.
+And each of these transactions are associated with persistence context of its own where all the entities which are being modified in the transaction is tracked.
+Lets say for a particular transaction we are retrieving the same information again and again. Hibernate will not got to the deata base each time.
+It retrieve the information from database for the first time and stored it in there associated persistence context. And next time if we ask for the same data it will return from the persistence context.
+This is what is called First level cache. The First level cache is with in the boundary of a single transaction.
+
+The Most important concept in the First Level Cache is the boundary of a single transaction.
+If we want to make the best use of First level cache the boundary of our transaction starts with out service method.
+So starting with our service method all the calls with the data layer should be in scope of a single transaction.
+
+First Level Cache is active by default. We do not need to configure it.
 
 
+Second Level Cache:
+------------------------
+
+The Second level cache is applicable across multiple transactions.
+Lets say we have one instance of our application deployed on application server and there are multiple users using it.
+Among all the users there are certain informations (Like Country, States) which are common. So there informations we will store in Second level Cache
 
 
+Second level cache is by default disabled. We can not configure all the data to the second level Cache. Because Hibernate doesn't know which data is going to change. We need to tell Hibernate what data is going to change and what data will be same between multiple transactions. 
+And the data which are common to multiple users and Transaction will be cached by Second level cache.
+
+We can implement second level Cache using EhCache.
+
+1. We need to add following dependency of EhCache
+
+	<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+	</dependency>
+
+# Then we need to add properties to perform following steps in properties file  
+
+2. enable second level cache
+
+spring.jpa.properties.hibernate.cache.use_second_level_cache=true
+
+3. specify caching framework - EhCache
+
+spring.jpa.properties.hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionfactory
+
+4. Only Cache what I tell you to Cache
+
+spring.jpa.properties.javax.persistence.sharedCache.mode=ENABLE_SELECTIVE
+
+5. What data to Cache
+It is very crucial to decide what data we need to cache in second level caching.
+And we do this my using an annotation @Cacheable at class level (Entity level)
 
 
