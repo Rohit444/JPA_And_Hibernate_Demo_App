@@ -1,7 +1,6 @@
 package com.java.jpa.hibernate.demo.demojpahibernate;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.java.jpa.hibernate.demo.demojpahibernate.entity.Passport;
 import com.java.jpa.hibernate.demo.demojpahibernate.entity.Student;
@@ -40,7 +41,7 @@ class studentReposioryTest {
 //	}
 	
 	@Test
-	@Transactional
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void gettingStudentFromPassportTest() {
 		Passport passport = entityManager.find(Passport.class, 40001L);
 		log.info("Passport Number is ====> "+passport.getNumber());

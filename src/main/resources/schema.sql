@@ -1,9 +1,24 @@
 insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
-values(10001,'Jpa 50 minuts',sysdate(),sysdate());
+values(10001,'in 28 minuts',sysdate(),sysdate());
 insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
-values(10002,'Spring 50 minuts',sysdate(),sysdate());
+values(10002,'in 28 minuts',sysdate(),sysdate());
 insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
-values(10003,'Spring 100 minuts',sysdate(),sysdate());
+values(10003,'in 28 minuts',sysdate(),sysdate());
+insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
+values(10004,'Spring 50 minuts',sysdate(),sysdate());
+insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
+values(10005,'Spring 100 minuts',sysdate(),sysdate());
+insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
+values(10006,'Spring 100 minuts',sysdate(),sysdate());
+insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
+values(10007,'Dummy1',sysdate(),sysdate());
+insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
+values(10008,'Dummy2',sysdate(),sysdate());
+insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
+values(10009,'Dummy3',sysdate(),sysdate());
+insert into COURSE_DETAILS (id, name, created_date, last_updated_date) 
+values(10010,'Dummy4',sysdate(),sysdate());
+
 
 insert into passport (id, number)
 values (40001,'E123564');

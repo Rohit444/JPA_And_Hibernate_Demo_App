@@ -437,9 +437,115 @@ Properties in Transaction Management:
 ---------------------------------------
 ACID properties
 A -> Atomicity -> Either a transaction is completely successful or all the changes that are done by a transaction should be reverted back.
+
 C -> Consistency -> It means leaving a system in Consistent state irrespective of weather the transaction succeeded or failed. 
                     Example in a bank transfer after a particular transaction the total sum of amount will be same irrespective if it fails or succeeded.
+                    
 I -> Isolation ->   How does one transaction which is already running can affect another transaction which is running in parallel.
+
 D -> Durability ->  Once the transaction is completed, even if a system is crashes the data will be persisted. The state of a transaction has to be persisted and permanent even if system fails.
+
+
+Dirty Read, Non-Repeatable Read and Phanthom Read
+----------------------------------------------------
+Suppose there are two transactions A and B 
+
+Dirty Read -> Reading a modified values of a transaction A by another transaction B before transaction A is committed.
+
+Non-Repeatable Read -> When we are reading same value twice during a transaction we get different values, Because some other transaction has updated that value.
+
+Phanthom Read -> When we are reading values from a table twice by one transaction A, than during its consecutive reads operation, some more rows have been inserted or deleted by another transaction B 
+                 then we get different number of rows at the end of the transaction A this is called Panthom Read.
+                 
+4 Isolation Levels
+-----------------------
+Read Uncommitted -> It would allowed any transaction to read any data weather it is uncommitted or committed, 
+                    it imposes no restrictions so dirty read, non repeatable read and phanthom reads all are possible.
+
+Read Committed -> It will only allow a transaction to read a "data" if it is committed by another transaction which is running parallelly. 
+                  The transaction will impose a lock on the data which has been modified to stop other transactions to read uncommitted data. 
+                  So any data which changed during the transaction will be available if the transaction is committed. So there will not be any dirty read.
+                    
+
+Repeatable Read -> It will impose lock not only the modified values during the transaction but also what ever values we read during that transaction (for example entire row of a table).
+                   for example if a specific value is read by a transaction from a table then the entire row is lock and not available for any other transaction. Only when the transaction is committed the lock will be removed.
+                   So in Repeatable read both dirty read and non-repeatable reads problems are solved.
+
+Serializable -> In Serializable a table lock has been imposed, means all the data which is matches or related to a constraint or query condition of a table(example: Select * from Person where age between 5 and 55, "age between 5 and 55" this is the constrain)
+                is locked. So in this example the for age between 5 and 55 we will not be allow to do any select, update and insert operation by any other transaction until the transaction completes its execution.
+                Consider another example: select * from person;  in this case for a given transaction entire table will be locked. This will solve all problems like dirty read, non-repeatable read and phanthom read.
+
+
+Choosing between Isolation levels:
+------------------------------------
+Serializable -> Solved all the problems but poor performance.
+
+most commonly used isolation level used by most of the applications is Read Committed.
+
+It is also possible that we can have different isolation levels for different transactions with in a same application.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+There are two kind of @Transactional annotations provided by Spring and JPA respectively:
+
+Spring -> org.springframwork.transaction.annotation.transactional (if we want to do transaction management across multiple databases and queues).
+          By using @Transactional using Spring I can decide its Isolation levels as well
+          For Example:
+          
+          	@Transactional(isolation = Isolation.READ_COMMITTED)
+	      	public void gettingStudentFromPassportTest() {
+			//....
+		}
+		
+		We can set a default isolation level across all transactions for a specific hibernate connection as following.
+		
+		in properties file:
+		
+		spring.jpa.properties.hibernae.connection.isolation=2
+
+JPA -> javax.transaction.transational (for a single database)
+
+=================================================================================================================================================================================================================================================================================================================================================================
+
+** Spring Data Jpa **
+
+   The problem using Entity manager is that there are so much of code duplications across different repositories in our application.
+   We are doing almost the same thing for fetching, updating, adding or deleting data. Only difference is the Entity name.
+
+   Secondly now there are proliferation of data stores. Earlier there were only one kind of data stores Relational data stores, but now there are multiple variety of Big data stores available
+   Spring data provide an abstraction to be able to access any kind of data. And Spring Data JPA is the JPA specific implementation of Spring data.
+   
+   
+   Note:
+   
+   JPARepository extends PagingAndSortingRepository which extends CrudRepository
+
+
+Custom Queries using Spring Data JPA
+-----------------------------------------
+Example:
+public interface CourseSpringDataRepository extends JpaRepository<Course, Long>{
+	      
+	List<Course> findByName(String name);
+	List<Course> findByIdAndName(Long id, String name);
+	List<Course> findByNameOrderByIdDesc(String name);
+	
+	//using JPQL
+	@Query("Select c from Course c where name like '%in 28 minuts'")
+	List<Course> CourseByLike100Minuts();
+	
+	//using Native query
+	@Query(value = "Select * from Course_Details c where name like '%in 28 minuts'",nativeQuery = true)
+	List<Course> CourseByLike100MinutsNativeQuery();
+	
+	//using Named query
+	@Query(name = "query_get_100_steps_cources")
+	List<Course> CourseByLike100MinutsNamedQuery();	
+}
+
+
+
+
+
+
 
 
